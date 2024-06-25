@@ -1,0 +1,4 @@
+# Cấu hình IDE, dùng ở nhiều IDE khác nhau 
+[*]
+indent_size = 2
+indent_style = space
