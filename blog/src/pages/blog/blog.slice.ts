@@ -1,4 +1,4 @@
-import { PayloadAction, createAction, createReducer, createSlice, nanoid } from '@reduxjs/toolkit'
+import { PayloadAction, createAction, createReducer, createSlice, current, nanoid } from '@reduxjs/toolkit'
 import { initialPostList } from 'constants/blog'
 import { Post } from 'types/blog.type'
 
@@ -8,7 +8,8 @@ interface BlogState {
 }
 
 const initialState: BlogState = {
-  postList: initialPostList,
+  // postList: initialPostList,
+  postList: [],
   editingPost: null
 }
 
@@ -70,6 +71,21 @@ const blogSlice = createSlice({
         }
       }
     }
+  },
+  extraReducers(builder) {
+    builder
+      .addCase('blog/getPostListSuccess', (state, action: any) => {
+        state.postList = action.payload
+      })
+      .addMatcher(
+        (action) => action.type.includes('cancel'),
+        (state, action) => {
+          console.log(current(state))
+        }
+      )
+      .addDefaultCase((state, action) => {
+        console.log(`action type: ${action.type}`, current(state))
+      })
   }
 })
 

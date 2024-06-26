@@ -4,6 +4,7 @@ import { RootState } from 'store'
 import PostItem from '../PostItem'
 import { useEffect } from 'react'
 import http from 'utils/http'
+import { error } from 'console'
 
 // Gọi API trong useEffect
 // Nếu gọi thành công thì dispatch action type: "blog/getPostListSuccess"
@@ -15,19 +16,32 @@ export default function PostList() {
   const postList = useSelector((state: RootState) => state.blog.postList)
   const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   const controller = new AbortController()
-  //   http
-  //     .get('post', {
-  //       signal: controller.signal
-  //     })
-  //     .then((res) => {
-  //       console.log(res)
-  //     })
-  //   return () => {
-  //     controller.abort()
-  //   }
-  // }, [])
+  useEffect(() => {
+    const controller = new AbortController()
+    http
+      .get('post', {
+        signal: controller.signal
+      })
+      .then((res) => {
+        console.log(res)
+        const postsListResult = res.data
+        dispatch({
+          type: 'blog/getPostListSuccess',
+          payload: postsListResult
+        })
+      })
+      .catch((error) => {
+        if (!(error.code === 'ERR_CANCELED')) {
+          dispatch({
+            type: 'blog/getPostListFail',
+            payload: error
+          })
+        }
+      })
+    return () => {
+      controller.abort()
+    }
+  }, [dispatch])
 
   const handleDelete = (postId: string) => {
     dispatch(deletePost(postId))
