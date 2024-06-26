@@ -1,6 +1,15 @@
-import { PayloadAction, createAction, createReducer, createSlice, current, nanoid } from '@reduxjs/toolkit'
+import {
+  PayloadAction,
+  createAction,
+  createAsyncThunk,
+  createReducer,
+  createSlice,
+  current,
+  nanoid
+} from '@reduxjs/toolkit'
 import { initialPostList } from 'constants/blog'
 import { Post } from 'types/blog.type'
+import http from 'utils/http'
 
 interface BlogState {
   postList: Post[]
@@ -12,6 +21,16 @@ const initialState: BlogState = {
   postList: [],
   editingPost: null
 }
+
+// createAsyncThunk nhận vào (action, async callback)
+// Dùng createAsyncThunk ở extraReducers, dùng ở reducers sẽ genarate ra action (ko cần thiết)
+// _ : khi ko khai báo gì
+export const getPostList = createAsyncThunk('blog/getPostList', async (_, thunkAPI) => {
+  const response = await http.get<Post[]>('post', {
+    signal: thunkAPI.signal
+  })
+  return response.data
+})
 
 // export const addPost = createAction('blog/addPost', function (post: Omit<Post, 'id'>) {
 //   return {
@@ -74,7 +93,10 @@ const blogSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase('blog/getPostListSuccess', (state, action: any) => {
+      // .addCase('blog/getPostListSuccess', (state, action: any) => {
+      //   state.postList = action.payload
+      // })
+      .addCase(getPostList.fulfilled, (state, action) => {
         state.postList = action.payload
       })
       .addMatcher(

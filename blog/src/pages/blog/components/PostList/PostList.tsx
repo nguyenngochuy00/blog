@@ -1,6 +1,6 @@
-import { deletePost, startEditingPost } from 'pages/blog/blog.slice'
+import { deletePost, getPostList, startEditingPost } from 'pages/blog/blog.slice'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'store'
+import { RootState, useAppDispatch } from 'store'
 import PostItem from '../PostItem'
 import { useEffect } from 'react'
 import http from 'utils/http'
@@ -14,32 +14,37 @@ import { error } from 'console'
 
 export default function PostList() {
   const postList = useSelector((state: RootState) => state.blog.postList)
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const controller = new AbortController()
-    http
-      .get('post', {
-        signal: controller.signal
-      })
-      .then((res) => {
-        console.log(res)
-        const postsListResult = res.data
-        dispatch({
-          type: 'blog/getPostListSuccess',
-          payload: postsListResult
-        })
-      })
-      .catch((error) => {
-        if (!(error.code === 'ERR_CANCELED')) {
-          dispatch({
-            type: 'blog/getPostListFail',
-            payload: error
-          })
-        }
-      })
+    // const controller = new AbortController()
+    // http
+    //   .get('post', {
+    //     signal: controller.signal
+    //   })
+    //   .then((res) => {
+    //     console.log(res)
+    //     const postsListResult = res.data
+    //     dispatch({
+    //       type: 'blog/getPostListSuccess',
+    //       payload: postsListResult
+    //     })
+    //   })
+    //   .catch((error) => {
+    //     if (!(error.code === 'ERR_CANCELED')) {
+    //       dispatch({
+    //         type: 'blog/getPostListFail',
+    //         payload: error
+    //       })
+    //     }
+    //   })
+    // return () => {
+    //   controller.abort()
+    // }
+    const promise = dispatch(getPostList())
     return () => {
-      controller.abort()
+      promise.abort()
     }
   }, [dispatch])
 
