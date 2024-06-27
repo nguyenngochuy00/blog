@@ -1,13 +1,4 @@
-import {
-  PayloadAction,
-  createAction,
-  createAsyncThunk,
-  createReducer,
-  createSlice,
-  current,
-  nanoid
-} from '@reduxjs/toolkit'
-import { initialPostList } from 'constants/blog'
+import { PayloadAction, createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
 import { Post } from 'types/blog.type'
 import http from 'utils/http'
 
@@ -27,6 +18,13 @@ const initialState: BlogState = {
 // _ : khi ko khai báo gì
 export const getPostList = createAsyncThunk('blog/getPostList', async (_, thunkAPI) => {
   const response = await http.get<Post[]>('post', {
+    signal: thunkAPI.signal
+  })
+  return response.data
+})
+
+export const addPost = createAsyncThunk('blog/addPost', async (body: Omit<Post, 'id'>, thunkAPI) => {
+  const response = await http.post<Post[]>('post', body, {
     signal: thunkAPI.signal
   })
   return response.data
@@ -75,22 +73,24 @@ const blogSlice = createSlice({
         return false
       })
       state.editingPost = null
-    },
-    addPost: {
-      reducer: (state, action: PayloadAction<Post>) => {
-        const post = action.payload
-        state.postList.push(post)
-      },
-      prepare: (post: Omit<Post, 'id'>) => {
-        return {
-          payload: {
-            ...post,
-            id: nanoid()
-          }
-        }
-      }
     }
+    // addPost: {
+    //   reducer: (state, action: PayloadAction<Post>) => {
+    //     const post = action.payload
+    //     state.postList.push(post)
+    //   },
+    //   prepare: (post: Omit<Post, 'id'>) => {
+    //     return {
+    //       payload: {
+    //         ...post,
+    //         id: nanoid()
+    //       }
+    //     }
+    //   }
+    // }
   },
+
+  // extraReducers xử lý asyncThunk
   extraReducers(builder) {
     builder
       // .addCase('blog/getPostListSuccess', (state, action: any) => {
@@ -98,6 +98,9 @@ const blogSlice = createSlice({
       // })
       .addCase(getPostList.fulfilled, (state, action) => {
         state.postList = action.payload
+      })
+      .addCase(addPost.fulfilled, (state, action: any) => {
+        state.postList.push(action.payload)
       })
       .addMatcher(
         (action) => action.type.includes('cancel'),
@@ -148,7 +151,7 @@ const blogSlice = createSlice({
 //     })
 // })
 
-export const { addPost, cancelEditingPost, deletePost, finishEditingPost, startEditingPost } = blogSlice.actions
+export const { cancelEditingPost, deletePost, finishEditingPost, startEditingPost } = blogSlice.actions
 const blogReducer = blogSlice.reducer
 
 export default blogReducer

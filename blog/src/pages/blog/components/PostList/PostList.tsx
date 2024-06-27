@@ -1,10 +1,8 @@
 import { deletePost, getPostList, startEditingPost } from 'pages/blog/blog.slice'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { RootState, useAppDispatch } from 'store'
 import PostItem from '../PostItem'
 import { useEffect } from 'react'
-import http from 'utils/http'
-import { error } from 'console'
 
 // Gọi API trong useEffect
 // Nếu gọi thành công thì dispatch action type: "blog/getPostListSuccess"

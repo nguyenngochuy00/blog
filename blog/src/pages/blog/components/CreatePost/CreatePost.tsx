@@ -1,7 +1,7 @@
 import { addPost, cancelEditingPost, finishEditingPost } from 'pages/blog/blog.slice'
 import { Fragment, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'store'
+import { useSelector } from 'react-redux'
+import { RootState, useAppDispatch } from 'store'
 import { Post } from 'types/blog.type'
 
 const initialState: Post = {
@@ -17,7 +17,8 @@ export default function CreatePost() {
   const [formData, setFormData] = useState<Post>(initialState)
   // Dùng useSelector để lấy data từ PostList
   const editingPost = useSelector((state: RootState) => state.blog.editingPost)
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // Đổ data lấy từ PostList vào form, initialState khi click button Cancel để clean form
   useEffect(() => {
@@ -29,8 +30,8 @@ export default function CreatePost() {
     if (editingPost) {
       dispatch(finishEditingPost(formData))
     } else {
-      const formDataWithId = { ...formData, id: new Date().toISOString() }
-      dispatch(addPost(formDataWithId))
+      // const formDataWithId = { ...formData, id: new Date().toISOString() }
+      dispatch(addPost(formData))
     }
     setFormData(initialState)
   }
