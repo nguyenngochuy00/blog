@@ -1,4 +1,4 @@
-import { addPost, cancelEditingPost, finishEditingPost } from 'pages/blog/blog.slice'
+import { addPost, cancelEditingPost, updatePost } from 'pages/blog/blog.slice'
 import { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState, useAppDispatch } from 'store'
@@ -28,7 +28,13 @@ export default function CreatePost() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (editingPost) {
-      dispatch(finishEditingPost(formData))
+      // dispatch(finishEditingPost(formData))
+      dispatch(
+        updatePost({
+          postId: editingPost.id,
+          body: formData
+        })
+      )
     } else {
       // const formDataWithId = { ...formData, id: new Date().toISOString() }
       dispatch(addPost(formData))
