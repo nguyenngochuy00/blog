@@ -1,5 +1,5 @@
 {
-  "post": [
+  "posts": [
     {
       "description": "Nghịch cảnh là một phần của cuộc sống. Nó không thể bị kiểm soát. Cái có thể kiểm soát chính là cách chúng ta phản ứng trước nghịch cảnh.\n",
       "featuredImage": "https://images.unsplash.com/photo-1665412019489-1928d5afa5cc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80",
@@ -33,28 +33,20 @@
       "title": "Nơi nào có ý chí, nơi đó có con đường."
     },
     {
-      "id": "",
-      "title": "Mất niềm tin vào bản thân, cũng như bạn đánh mất thành công đang đợi mình",
-      "description": "Ai cũng nói tương lai chúng ta luôn rộng mở, nhưng nếu không nắm bắt được hiện tại thì tương lai sẽ chẳng có gì.",
-      "publishDate": "2024-06-27T15:51",
+      "id": "f021",
+      "description": "Được Dev",
       "featuredImage": "https://images.unsplash.com/photo-1665412019489-1928d5afa5cc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80",
-      "published": true
+      "publishDate": "2022-10-13T11:32",
+      "published": true,
+      "title": "Mọi công việc thành đạt đều nhờ sự kiên trì và lòng say mê."
     },
     {
-      "id": "",
-      "title": "Mọi công việc thành đạt đều nhờ sự kiên trì và lòng say mê.",
-      "description": "Nghịch cảnh là một phần của cuộc sống. Nó không thể bị kiểm soát. Cái có thể kiểm soát chính là cách chúng ta phản ứng trước nghịch cảnh.",
-      "publishDate": "2024-06-28T14:05",
+      "id": "83c0",
+      "description": "Được Dev",
       "featuredImage": "https://images.unsplash.com/photo-1665412019489-1928d5afa5cc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80",
-      "published": true
-    },
-    {
-      "id": "",
-      "title": "Mọi công việc thành đạt đều nhờ sự kiên trì và lòng say mê.",
-      "description": "Nghịch cảnh là một phần của cuộc sống. Nó không thể bị kiểm soát. Cái có thể kiểm soát chính là cách chúng ta phản ứng trước nghịch cảnh.",
-      "publishDate": "2024-06-28T14:48",
-      "featuredImage": "https://images.unsplash.com/photo-1665412019489-1928d5afa5cc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80",
-      "published": true
+      "publishDate": "2022-10-13T11:32",
+      "published": true,
+      "title": "Mọi công việc thành đạt đều nhờ sự kiên trì và lòng say mê."
     }
   ]
 }
