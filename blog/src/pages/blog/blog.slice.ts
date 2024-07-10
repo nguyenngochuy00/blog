@@ -1,16 +1,24 @@
-import { PayloadAction, createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
+import { AsyncThunk, PayloadAction, createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
 import { Post } from 'types/blog.type'
 import http from 'utils/http'
+
+type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>
+
+type PendingAction = ReturnType<GenericAsyncThunk['pending']>
+type RejectedAction = ReturnType<GenericAsyncThunk['rejected']>
+type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>
 
 interface BlogState {
   postList: Post[]
   editingPost: Post | null
+  loading: boolean
 }
 
 const initialState: BlogState = {
   // postList: initialPostList,
   postList: [],
-  editingPost: null
+  editingPost: null,
+  loading: false
 }
 
 // createAsyncThunk nhận vào (action, async callback)
@@ -136,10 +144,28 @@ const blogSlice = createSlice({
           state.postList.splice(deletePostIndex, 1)
         }
       })
-      .addMatcher(
-        (action) => action.type.includes('cancel'),
+      // .addMatcher(
+      //   (action) => action.type.includes('cancel'),
+      //   (state, action) => {
+      //     console.log(current(state))
+      //   }
+      // )
+      .addMatcher<PendingAction>(
+        (action) => action.type.endsWith('/pending'),
         (state, action) => {
-          console.log(current(state))
+          state.loading = true
+        }
+      )
+      .addMatcher<RejectedAction>(
+        (action) => action.type.endsWith('/rejected'),
+        (state, action) => {
+          state.loading = false
+        }
+      )
+      .addMatcher<FulfilledAction>(
+        (action) => action.type.endsWith('/fulfilled'),
+        (state, action) => {
+          state.loading = false
         }
       )
       .addDefaultCase((state, action) => {
