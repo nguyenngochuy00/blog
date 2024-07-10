@@ -2,8 +2,13 @@ import { AsyncThunk, PayloadAction, createAsyncThunk, createSlice, current } fro
 import { Post } from 'types/blog.type'
 import http from 'utils/http'
 
+// AsyncThunk là 1 kiểu generic (tổng quát)
+// Tham số đầu tiên là kiểu của giá trị trả về khi hành động hoàn thành
+// Tham số thứ hai là kiểu của tham số mà hành động nhận vào.
+// Tham số thứ ba là kiểu của đối tượng tùy chọn cho cấu hình bổ sung (thường là thunkAPI).
 type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>
-
+// pending là một hàm trong GenericAsyncThunk đại diện cho hành động khi một async thunk đang được thực thi.
+// Kiểu PendingAction này sẽ đại diện cho hành động khi async thunk ở trạng thái pending.
 type PendingAction = ReturnType<GenericAsyncThunk['pending']>
 type RejectedAction = ReturnType<GenericAsyncThunk['rejected']>
 type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>
