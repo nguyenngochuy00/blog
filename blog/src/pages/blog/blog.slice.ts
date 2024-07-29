@@ -17,13 +17,15 @@ interface BlogState {
   postList: Post[]
   editingPost: Post | null
   loading: boolean
+  currentRequestId: undefined | string
 }
 
 const initialState: BlogState = {
   // postList: initialPostList,
   postList: [],
   editingPost: null,
-  loading: false
+  loading: false,
+  currentRequestId: undefined
 }
 
 // createAsyncThunk nhận vào (action, async callback)
@@ -159,18 +161,16 @@ const blogSlice = createSlice({
         (action) => action.type.endsWith('/pending'),
         (state, action) => {
           state.loading = true
+          state.currentRequestId = action.meta.requestId
         }
       )
-      .addMatcher<RejectedAction>(
-        (action) => action.type.endsWith('/rejected'),
+      .addMatcher<RejectedAction | FulfilledAction>(
+        (action) => action.type.endsWith('/rejected') || action.type.endsWith('/fulfilled'),
         (state, action) => {
-          state.loading = false
-        }
-      )
-      .addMatcher<FulfilledAction>(
-        (action) => action.type.endsWith('/fulfilled'),
-        (state, action) => {
-          state.loading = false
+          if (state.loading && state.currentRequestId === action.meta.requestId) {
+            state.loading = false
+            state.currentRequestId = undefined
+          }
         }
       )
       .addDefaultCase((state, action) => {
